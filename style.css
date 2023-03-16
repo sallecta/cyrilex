@@ -90,17 +90,16 @@ h1 {color: white;font-size: 3.1em;font-family: "Helvetica Neue", Helvetica, Aria
 
 
 .flag {
-	text-align: center;
-	display: inline-block;
 	border: 2px solid #bbbbbb;
-	border-width: 2px 2px 2px 0;
+	border-left-width: 0px;
 	display: inline-block;
-	width: 13%;
+	line-height: 20px;
+	margin-left: -6px;
 	margin-top: 8px;
+	text-align: center;
 	vertical-align: top;
-	margin-left:-6px;
+	width: 13%;
 }
-
 .flag:hover {
 	color: white;
 }
