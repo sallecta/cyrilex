@@ -1,37 +1,37 @@
-
-class Cyrilex {
-	constructor() {
-		this.highlight = new RegexHighlight();
-		this.start = '/';
-		this.end = '/g';
-		this.engineArray = ['js'/*, 'pcre', 'python', 'ruby', 'java'*/];
-		this.extensionByEngine = [];
-		this.extensionByEngine['js'] = '';
-		/*this.extensionByEngine['pcre'] = myDomain + "/pcre.php";
-		this.extensionByEngine['python'] = myDomain + "/pcre.cgi";
-		this.extensionByEngine['ruby'] = myDomain + "/pcre.ruby.php";
-		this.extensionByEngine['java'] = myDomainAPI + '/regex-tester/pcre.java';*/
-		this.flags = ['g', 'i', 'm', 'u', 'y', 's', 'x', 'A', 'D', 'S', 'U', 'X', 'J', 'l', 'c', 'L', 'C'];
-		this.flagsByEngine = [];
-		this.flagsByEngine['js'] = ['g', 'i', 'm', 'u', 'y', 's'];
-		/*this.flagsByEngine['pcre'] = ['g', 'i', 'm', 'u', 's', 'x', 'A', 'D', 'S', 'U', 'X', 'J'];
-		this.flagsByEngine['python'] = ['g' /* findall ... * /, 'i' /* IGNORECASE, I * /, 'm' /* MULTILINE, M * /, 'u' /* UNICODE, U * /, 's' /* DOTALL, S * /, 'x' /* VERBOSE, X * /]; /*, 'l'  LOCALE, L * /
-		this.flagsByEngine['ruby'] = ['g', 'i', 'm', 'x'];
-		this.flagsByEngine['java'] = ['g', 'i', 'x', 's', 'm', 'u', 'l', 'c', 'L', 'C'];*/	
-		this.markersString = [];
-		this.myCodeMirrorString = null;
-		this.myCodeMirrorRegEx = null;
-		this.myCodeMirrorSubstitution = null;
-		this.myCodeMirrorSubstitutionResult = null;
-		this.markLeft = null;
-		this.markRight = null;
+const Cyrilex = {
+	construct: function() {
+		RegexHighlight.construct();
+		Cyrilex.highlight= RegexHighlight;
+		Cyrilex.start= '/';
+		Cyrilex.end= '/g';
+		Cyrilex.engineArray= ['js'/*, 'pcre', 'python', 'ruby', 'java'*/];
+		Cyrilex.extensionByEngine= [];
+		Cyrilex.extensionByEngine['js']= '';
+		/*Cyrilex.extensionByEngine['pcre'] = myDomain + "/pcre.php";
+		Cyrilex.extensionByEngine['python'] = myDomain + "/pcre.cgi";
+		Cyrilex.extensionByEngine['ruby'] = myDomain + "/pcre.ruby.php";
+		Cyrilex.extensionByEngine['java'] = myDomainAPI + '/regex-tester/pcre.java';*/
+		Cyrilex.flags= ['g', 'i', 'm', 'u', 'y', 's', 'x', 'A', 'D', 'S', 'U', 'X', 'J', 'l', 'c', 'L', 'C'];
+		Cyrilex.flagsByEngine= [];
+		Cyrilex.flagsByEngine['js']= ['g', 'i', 'm', 'u', 'y', 's'];
+		/*Cyrilex.flagsByEngine['pcre'] = ['g', 'i', 'm', 'u', 's', 'x', 'A', 'D', 'S', 'U', 'X', 'J'];
+		Cyrilex.flagsByEngine['python'] = ['g' /* findall ... * /, 'i' /* IGNORECASE, I * /, 'm' /* MULTILINE, M * /, 'u' /* UNICODE, U * /, 's' /* DOTALL, S * /, 'x' /* VERBOSE, X * /]; /*, 'l'  LOCALE, L * /
+		Cyrilex.flagsByEngine['ruby'] = ['g', 'i', 'm', 'x'];
+		Cyrilex.flagsByEngine['java'] = ['g', 'i', 'x', 's', 'm', 'u', 'l', 'c', 'L', 'C'];*/	
+		Cyrilex.markersString= [];
+		Cyrilex.myCodeMirrorString= null;
+		Cyrilex.myCodeMirrorRegEx= null;
+		Cyrilex.myCodeMirrorSubstitution= null;
+		Cyrilex.myCodeMirrorSubstitutionResult= null;
+		Cyrilex.markLeft= null;
+		Cyrilex.markRight= null;
 		
 		// regulex
-		this.visualize = null;
-		this.parse = null;
-		this.paper = null;
-	}
-	displayResultExplanation(result) {
+		Cyrilex.visualize= null;
+		Cyrilex.parse= null;
+		Cyrilex.paper= null;
+	},
+	displayResultExplanation: function(result) {
 		const container = document.createElement('div');
 		container.style.marginLeft = '10px';
 		container.appendChild(result.getTitle());
@@ -39,7 +39,7 @@ class Cyrilex {
 		// container.appendChild(document.createTextNode(result.label));
 		if (result.regexp) {
 			result.regexp.result.forEach(function (result) {
-				container.appendChild(this.displayResultExplanation(result));
+				container.appendChild(Cyrilex.displayResultExplanation(result));
 			});
 		}
 		if (result.result) {
@@ -50,75 +50,75 @@ class Cyrilex {
 					container.appendChild(subcontainer);
 					subcontainer.appendChild(document.createTextNode(subresult.section));
 					subcontainer.appendChild(document.createElement('br'));
-					subcontainer.appendChild(this.displayResultExplanation(subresult));
+					subcontainer.appendChild(Cyrilex.displayResultExplanation(subresult));
 				} else {
-					container.appendChild(this.displayResultExplanation(subresult));
+					container.appendChild(Cyrilex.displayResultExplanation(subresult));
 				}
 			});	
 		}
 		return container;
-	}
-	displayExplanation(explanation) {
-		this.highlight.highlight(this.myCodeMirrorRegEx, explanation, {pos: 1, color: 0});
-		return this.visualIt(explanation);
-	}
-	visualIt(re) {
+	},
+	displayExplanation: function(explanation) {
+		Cyrilex.highlight.highlight(Cyrilex.myCodeMirrorRegEx, explanation, {pos: 1, color: 0});
+		return Cyrilex.visualIt(explanation);
+	},
+	visualIt: function(re) {
 		const self = this;
 		if (!re) return false;
-		if (this.parse == null) {
+		if (Cyrilex.parse == null) {
 			setTimeout(function () {
 				self.visualIt(re);
 			}, 10);
 			return;
 		}
 		try {
-			const ret = this.parse(re.regExStr)
-			this.visualize(ret,re.regExFlags, this.paper);
+			const ret = Cyrilex.parse(re.regExStr)
+			Cyrilex.visualize(ret,re.regExFlags, Cyrilex.paper);
 		}
 		catch (e) {
-			if (e instanceof this.parse.RegexSyntaxError) {
-				return this.logError(re.regExStr, e);
+			if (e instanceof Cyrilex.parse.RegexSyntaxError) {
+				return Cyrilex.logError(re.regExStr, e);
 			} else {
-				this.setAndDisplay('editor-error', 'Syntax error in your regular expression');
+				Cyrilex.setAndDisplay('editor-error', 'Syntax error in your regular expression');
 			}
 		}
-	}
-	getEngine() {
-		return this.engineArray.reduce(function (result, engine) {
-			if (document.getElementById('engine-' + engine).checked) {
-				return engine;
+	},
+	getEngine: function() {
+		return Cyrilex.engineArray.reduce(function (arg_result, arg_engine) {
+			if (document.getElementById('engine-' + arg_engine).checked) {
+				return arg_engine;
 			}
-			return result;
+			return arg_result;
 		});	
-	}
-	updateFlags() {
+	},
+	updateFlags: function() {
 		const self = this;
-		if (this.markRight) this.markRight.clear();
-		if (this.markLeft) this.markLeft.clear();
+		if (Cyrilex.markRight) Cyrilex.markRight.clear();
+		if (Cyrilex.markLeft) Cyrilex.markLeft.clear();
 
-		let current = this.myCodeMirrorRegEx.getValue();
-		current = current.substring(0, current.length - this.end.length);
+		let current = Cyrilex.myCodeMirrorRegEx.getValue();
+		current = current.substring(0, current.length - Cyrilex.end.length);
 
-		this.end = "/";
-		const engine = this.getEngine();
-		this.flagsByEngine[engine].forEach(function (f) {
+		Cyrilex.end = "/";
+		const engine = Cyrilex.getEngine();
+		Cyrilex.flagsByEngine[engine].forEach(function (f) {
 			if (document.getElementById('flag_' + f).checked) self.end += f;
 		});
 
-		this.myCodeMirrorRegEx.setValue(current + this.end);
+		Cyrilex.myCodeMirrorRegEx.setValue(current + Cyrilex.end);
 
-		this.markLeft = this.myCodeMirrorRegEx.markText({line: 0, ch: 0}, {line: 0, ch: 1}, {readOnly: true, atomic: true, inclusiveLeft: true});		
-		this.markRight = this.myCodeMirrorRegEx.markText({line: 0, ch: this.myCodeMirrorRegEx.getValue().length - this.end.length}, {line: 0, ch: this.myCodeMirrorRegEx.getValue().length + 1}, {readOnly: true, atomic: true, inclusiveRight: true});	
-		this.checkRegEx();
-	}
-	analyzeMatch(matchArray, infinity) {			
+		Cyrilex.markLeft = Cyrilex.myCodeMirrorRegEx.markText({line: 0, ch: 0}, {line: 0, ch: 1}, {readOnly: true, atomic: true, inclusiveLeft: true});		
+		Cyrilex.markRight = Cyrilex.myCodeMirrorRegEx.markText({line: 0, ch: Cyrilex.myCodeMirrorRegEx.getValue().length - Cyrilex.end.length}, {line: 0, ch: Cyrilex.myCodeMirrorRegEx.getValue().length + 1}, {readOnly: true, atomic: true, inclusiveRight: true});	
+		Cyrilex.checkRegEx();
+	},
+	analyzeMatch: function(matchArray, infinity) {
 		const self = this;
 		if (infinity) {
-			this.setAndDisplay('editor-valid', 'infinity of matchs');
+			Cyrilex.setAndDisplay('editor-valid', 'infinity of matchs');
 		} else if (matchArray == null || matchArray.length == 0) {
-			this.setAndDisplay('editor-error', 'No match');
+			Cyrilex.setAndDisplay('editor-error', 'No match');
 		} else {
-			this.setAndDisplay('editor-valid', matchArray.length+' matchs');
+			Cyrilex.setAndDisplay('editor-valid', matchArray.length+' matchs');
 			matchArray.forEach(function (match, indexMark) {
 				var before = self.myCodeMirrorString.getValue("\n").substring(0, match.index).split("\n");
 				var find = match.m.split("\n");
@@ -130,17 +130,17 @@ class Cyrilex {
 				);	
 			});
 		}
-	}
-	checkRegExJS(pattern, subject) {
-		this.emptyAndHide(['editor-error', 'editor-valid']);
-		var regex = new RegExp( pattern , this.end.substring(1));
+	},
+	checkRegExJS: function(pattern, subject) {
+		Cyrilex.emptyAndHide(['editor-error', 'editor-valid']);
+		var regex = new RegExp( pattern , Cyrilex.end.substring(1));
 		var m = null;
 		var previous = -1;
 		var matchArray = [];
 		var infinity = false;
 		while ((m = regex.exec(subject)) !== null) {
 			matchArray.push({index: m.index, m: m[0]});
-			if (this.end.indexOf('g') === -1) {
+			if (Cyrilex.end.indexOf('g') === -1) {
 				break;
 			}
 			if (previous == m.index) {
@@ -152,50 +152,50 @@ class Cyrilex {
 			}
 			previous = m.index;
 		}
-		this.analyzeMatch(matchArray, infinity);
+		Cyrilex.analyzeMatch(matchArray, infinity);
 
-		this.myCodeMirrorSubstitutionResult.setValue(this.myCodeMirrorString.getValue("\n").replace(regex, this.myCodeMirrorSubstitution.getValue("\n")));
-	}
-	checkRegEx() {
-		const engine = this.getEngine();
+		Cyrilex.myCodeMirrorSubstitutionResult.setValue(Cyrilex.myCodeMirrorString.getValue("\n").replace(regex, Cyrilex.myCodeMirrorSubstitution.getValue("\n")));
+	},
+	checkRegEx: function() {
+		const engine = Cyrilex.getEngine();
 		try {
-			var editor = this.myCodeMirrorRegEx.getValue("\n");
+			var editor = Cyrilex.myCodeMirrorRegEx.getValue("\n");
 
-			this.markersString.forEach(function(marker) { marker.clear(); });
-			this.markersString.splice(0, this.markersString.length)
+			Cyrilex.markersString.forEach(function(marker) { marker.clear(); });
+			Cyrilex.markersString.splice(0, Cyrilex.markersString.length)
 
-			if (editor.substring(this.start.length, editor.length - this.end.length) == '') {
-				this.emptyAndHide(['editor-error', 'editor-valid']);
-				this.setAndDisplay('editor-valid', 'Enter your regular expression.');
+			if (editor.substring(Cyrilex.start.length, editor.length - Cyrilex.end.length) == '') {
+				Cyrilex.emptyAndHide(['editor-error', 'editor-valid']);
+				Cyrilex.setAndDisplay('editor-valid', 'Enter your regular expression.');
 			} else {
-				let explanation = (new RegexExplanation()).explain(editor.substring(this.start.length, editor.length - this.end.length));
-				explanation.regExStr = editor.substring(this.start.length, editor.length - this.end.length);
-				explanation.regExFlags = this.end.substring(1);
-				const errorMsg = this.displayExplanation(explanation);
+				let explanation = (new RegexExplanation()).explain(editor.substring(Cyrilex.start.length, editor.length - Cyrilex.end.length));
+				explanation.regExStr = editor.substring(Cyrilex.start.length, editor.length - Cyrilex.end.length);
+				explanation.regExFlags = Cyrilex.end.substring(1);
+				const errorMsg = Cyrilex.displayExplanation(explanation);
 				//if (engine == 'js') {
-					this.checkRegExJS(editor.substring(this.start.length, editor.length - this.end.length), this.myCodeMirrorString.getValue("\n"));
+					Cyrilex.checkRegExJS(editor.substring(Cyrilex.start.length, editor.length - Cyrilex.end.length), Cyrilex.myCodeMirrorString.getValue("\n"));
 				/*} else {
-					checkRegExPRE(editor.substring(start.length, editor.length - end.length), this.myCodeMirrorString.getValue("\n"), this.start, this.end, errorMsg);
+					checkRegExPRE(editor.substring(start.length, editor.length - end.length), Cyrilex.myCodeMirrorString.getValue("\n"), Cyrilex.start, Cyrilex.end, errorMsg);
 				}*/
 			}
 		} catch(e) {
 			if (e.message) {
-				this.setAndDisplay('editor-error', e.message);
+				Cyrilex.setAndDisplay('editor-error', e.message);
 			} else {
-				this.setAndDisplay('editor-error', 'Invalid regular expression');	
+				Cyrilex.setAndDisplay('editor-error', 'Invalid regular expression');	
 			}
 		}
-	}
-	manageFlags() {
-		const engine = this.getEngine();
-		this.flags.forEach(function (f) {
+	},
+	manageFlags: function() {
+		const engine = Cyrilex.getEngine();
+		Cyrilex.flags.forEach(function (f) {
 			document.getElementById('flag_' + f).parentNode.parentNode.style.display = 'none';
 		});
-		this.flagsByEngine[engine].forEach(function (f) {
+		Cyrilex.flagsByEngine[engine].forEach(function (f) {
 			document.getElementById('flag_' + f).parentNode.parentNode.style.display = '';
 		});	
-	}
-	clearSelect() {
+	},
+	clearSelect: function() {
 	  if (window.getSelection) {
 		if (window.getSelection().empty) {  // Chrome
 		  window.getSelection().empty();
@@ -205,8 +205,8 @@ class Cyrilex {
 	  } else if (document.selection) {  // IE
 		document.selection.empty();
 	  }
-	}
-	openTabber (tabber, className, selector) {
+	},
+	openTabber: function(tabber, className, selector) {
 		if (!className) {
 			className = 'w3-dark-grey';
 		}
@@ -224,16 +224,16 @@ class Cyrilex {
 		}
 		document.getElementById(tabber).style.display = "block"; 
 		if (document.getElementById('button-'+tabber)) document.getElementById('button-'+tabber).classList.add(className);
-	}
-	logError(re, err) {
+	},
+	logError: function(re, err) {
 	  var msg=["Error:"+err.message,""];
 	  if (typeof err.lastIndex==='number') {
 		msg.push(re);
 		msg.push(new Array(err.lastIndex).join('-')+"^");
 	  }
 	  return "Syntax error in your regular expression\n"+msg.join("\n");
-	}
-	emptyAndHide (containerId) {
+	},
+	emptyAndHide: function(containerId) {
 		const self = this;
 		if (containerId instanceof Array) {
 			containerId.forEach(function(id) {
@@ -246,28 +246,28 @@ class Cyrilex {
 				containerError.style.display = 'none';
 			}
 		}
-	}
-	setAndDisplay (containerId, messageText) {
+	},
+	setAndDisplay: function(containerId, messageText) {
 		var containerError = (typeof containerId === 'string' ? document.getElementById(containerId) : containerId);
 		if (containerError && messageText) {
 			containerError.innerText = messageText;
 			containerError.style.display = '';
 		}
-	}
-	initRegEx() {
-		this.myCodeMirrorSubstitution.setValue('Regular expression');
-		this.myCodeMirrorString.setValue('Online XPath tester');
-		this.myCodeMirrorRegEx.setValue('/(XP[a-z]th)|(JSONPath)/g');	
-	}
-	generateString() {
+	},
+	initRegEx: function() {
+		Cyrilex.myCodeMirrorSubstitution.setValue('Regular expression');
+		Cyrilex.myCodeMirrorString.setValue('Online XPath tester');
+		Cyrilex.myCodeMirrorRegEx.setValue('/(XP[a-z]th)|(JSONPath)/g');	
+	},
+	generateString: function() {
 		try {
-			const pattern = this.myCodeMirrorRegEx.getValue("\n").substring(this.start.length, this.myCodeMirrorRegEx.getValue("\n").length - this.end.length);
-			this.myCodeMirrorString.setValue(new RandExp(new RegExp( pattern , this.end.substring(1))).gen());
+			const pattern = Cyrilex.myCodeMirrorRegEx.getValue("\n").substring(Cyrilex.start.length, Cyrilex.myCodeMirrorRegEx.getValue("\n").length - Cyrilex.end.length);
+			Cyrilex.myCodeMirrorString.setValue(new RandExp(new RegExp( pattern , Cyrilex.end.substring(1))).gen());
 		} catch(e) {
-			this.setAndDisplay('editor-error', 'An error has occured: ' + e.message);
+			Cyrilex.setAndDisplay('editor-error', 'An error has occured: ' + e.message);
 		}
-	}
-	init() {
+	},
+	init: function() {
 		const self = this;
 
 		require(['external/regulex/src/libs/raphael','external/regulex/src/visualize','external/regulex/src/parse'],function (R,_visualize,_parse) {
@@ -276,58 +276,58 @@ class Cyrilex {
 			self.paper = R('graphCt', 10, 10);
 		});
 
-		this.myCodeMirrorSubstitution = CodeMirror.fromTextArea(document.getElementById('editor-container-substitution'), { lineNumbers: true, viewportMargin: Infinity});
-		this.myCodeMirrorSubstitution.setSize(null, 42);
-		this.myCodeMirrorSubstitution.on( "change", this.checkRegEx.bind(this));
+		Cyrilex.myCodeMirrorSubstitution = CodeMirror.fromTextArea(document.getElementById('editor-container-substitution'), { lineNumbers: true, viewportMargin: Infinity});
+		Cyrilex.myCodeMirrorSubstitution.setSize(null, 42);
+		Cyrilex.myCodeMirrorSubstitution.on( "change", Cyrilex.checkRegEx.bind(this));
 		
-		this.myCodeMirrorSubstitutionResult = CodeMirror.fromTextArea(document.getElementById('editor-container-substitution-result'), { lineNumbers: true, readOnly: true, lineWrapping: true, viewportMargin: Infinity});
-		this.myCodeMirrorSubstitutionResult.setSize(null, 160);
+		Cyrilex.myCodeMirrorSubstitutionResult = CodeMirror.fromTextArea(document.getElementById('editor-container-substitution-result'), { lineNumbers: true, readOnly: true, lineWrapping: true, viewportMargin: Infinity});
+		Cyrilex.myCodeMirrorSubstitutionResult.setSize(null, 160);
 
-		this.myCodeMirrorString = CodeMirror.fromTextArea(document.getElementById('editor-container'), { lineNumbers: true, lineWrapping: true,viewportMargin: Infinity});
-		this.myCodeMirrorString.setSize(null, 160);
-		this.myCodeMirrorString.on( "change", this.checkRegEx.bind(this));
+		Cyrilex.myCodeMirrorString = CodeMirror.fromTextArea(document.getElementById('editor-container'), { lineNumbers: true, lineWrapping: true,viewportMargin: Infinity});
+		Cyrilex.myCodeMirrorString.setSize(null, 160);
+		Cyrilex.myCodeMirrorString.on( "change", Cyrilex.checkRegEx.bind(this));
 		
-		this.myCodeMirrorRegEx = CodeMirror.fromTextArea(document.getElementById('editor-container-regexp'), { lineNumbers: false, viewportMargin: Infinity});
-		this.myCodeMirrorRegEx.on( "change", this.checkRegEx.bind(this));
-		this.myCodeMirrorRegEx.setSize(null, 42);
+		Cyrilex.myCodeMirrorRegEx = CodeMirror.fromTextArea(document.getElementById('editor-container-regexp'), { lineNumbers: false, viewportMargin: Infinity});
+		Cyrilex.myCodeMirrorRegEx.on( "change", Cyrilex.checkRegEx.bind(this));
+		Cyrilex.myCodeMirrorRegEx.setSize(null, 42);
 		
-		this.myCodeMirrorRegEx.on( "beforeChange", function(cm, change) { 
+		Cyrilex.myCodeMirrorRegEx.on( "beforeChange", function(cm, change) { 
 			if (change.text && change.text.length > 1) 
 			{ 
 				change.update(change.from, change.to, [ change.text.join("") ]); 
 			} 
 		}, this); 			
 		
-		this.flags.forEach(function (f) {
+		Cyrilex.flags.forEach(function (f) {
 			document.getElementById('flag_' + f).addEventListener('change', function(e) { 
-				 self.updateFlags();
+				 Cyrilex.updateFlags();
 			}, false); 			
 		});
 
-		this.engineArray.forEach(function (engine) {
+		Cyrilex.engineArray.forEach(function (engine) {
 			const self = this;
 			document.getElementById('engine-' + engine).addEventListener('change', function(e) { 
-				self.manageFlags();
-				self.updateFlags();
-				self.checkRegEx();
-				if (document.URL.split('#').length == 1 || self.engineArray.indexOf(document.URL.split('#')[1]) !== -1) {
+				Cyrilex.manageFlags();
+				Cyrilex.updateFlags();
+				Cyrilex.checkRegEx();
+				if (document.URL.split('#').length == 1 || Cyrilex.engineArray.indexOf(document.URL.split('#')[1]) !== -1) {
 					if (document.URL.indexOf('/regex/') === -1) {
-						history.pushState({}, "", window.location.pathname + "#"+self.getEngine());
+						history.pushState({}, "", window.location.pathname + "#"+Cyrilex.getEngine());
 					}
 				}
 			}, false);
 		});
 		
-		this.emptyAndHide(['editor-error', 'editor-valid']);
+		Cyrilex.emptyAndHide(['editor-error', 'editor-valid']);
 
-		this.markLeft = this.myCodeMirrorRegEx.markText({line: 0, ch: 0}, {line: 0, ch: 1}, {atomic: true, inclusiveLeft: true});
-		this.markRight = this.myCodeMirrorRegEx.markText({line: 0, ch: this.myCodeMirrorRegEx.getValue().length - this.end.length }, {line: 0, ch: this.myCodeMirrorRegEx.getValue().length + 1 }, {readOnly: true, atomic: true, inclusiveRight: true});
+		Cyrilex.markLeft = Cyrilex.myCodeMirrorRegEx.markText({line: 0, ch: 0}, {line: 0, ch: 1}, {atomic: true, inclusiveLeft: true});
+		Cyrilex.markRight = Cyrilex.myCodeMirrorRegEx.markText({line: 0, ch: Cyrilex.myCodeMirrorRegEx.getValue().length - Cyrilex.end.length }, {line: 0, ch: Cyrilex.myCodeMirrorRegEx.getValue().length + 1 }, {readOnly: true, atomic: true, inclusiveRight: true});
 		
-		this.manageFlags();
-		this.updateFlags();
+		Cyrilex.manageFlags();
+		Cyrilex.updateFlags();
 
-		this.highlight.init();
-		this.initRegEx(); 
+		Cyrilex.highlight.init();
+		Cyrilex.initRegEx(); 
 				
 		const  coll = document.getElementsByClassName("collapsible");
 		for (let i = 0; i < coll.length; i++) {

@@ -1,10 +1,9 @@
-
-class RegexHighlight {
-	constructor() {
+const RegexHighlight = {
+	construct: function() {
 		this.colors = ['#4298B5','#ADC4CC','#9B539C','#92B06A','#E19D29','#EB65A0','#DD5F32'];
 		this.markers = [];
-	}
-	init() {
+	},
+	init: function() {
 		const style = document.createElement('style');
 		let styleData = '';
 		this.colors.forEach(function(color, i) {
@@ -13,8 +12,8 @@ class RegexHighlight {
 		style.type = 'text/css';
 		style.innerHTML = styleData;
 		document.getElementsByTagName('head')[0].appendChild(style);
-	}
-	highlight(myCodeMirrorRegEx, explanation, pos) {
+	},
+	highlight: function(myCodeMirrorRegEx, explanation, pos) {
 		const self = this;
 		if (pos.pos === 1) {
 			this.markers.forEach(function(marker) { marker.clear(); });

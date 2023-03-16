@@ -96,7 +96,7 @@
 			</ul>
 			<div class="regex-space-top">
 				<b>String to test</b>
-				<span class="regex-generate-string regex-pointer" onclick="cyrilex.generateString();">Generate a string from RegEx (Beta)</span>
+				<span class="regex-generate-string regex-pointer" onclick="Cyrilex.generateString();">Generate a string from RegEx (Beta)</span>
 			</div>
 			<div class="editor-container">
 				<textarea id="editor-container" class="editor" placeholder="Enter your test string"></textarea>
@@ -121,8 +121,8 @@
 		</div>
 		<div class="sidebar medium">
 			<div>
-				<div class="tab-sub-menu tab-sub-menu-select" id="button-sidebarmenu-engine" data-name="menu-engine" onclick="cyrilex.openTabber('sidebarmenu-engine', 'tab-sub-menu-select', 'div[id|=sidebarmenu]');">RegEx Engine</div>
-				<div class="tab-sub-menu" id="button-sidebarmenu-start" data-name="menu-start" onclick="cyrilex.openTabber('sidebarmenu-start', 'tab-sub-menu-select', 'div[id|=sidebarmenu]');">Quick Start</div>
+				<div class="tab-sub-menu tab-sub-menu-select" id="button-sidebarmenu-engine" data-name="menu-engine" onclick="Cyrilex.openTabber('sidebarmenu-engine', 'tab-sub-menu-select', 'div[id|=sidebarmenu]');">RegEx Engine</div>
+				<div class="tab-sub-menu" id="button-sidebarmenu-start" data-name="menu-start" onclick="Cyrilex.openTabber('sidebarmenu-start', 'tab-sub-menu-select', 'div[id|=sidebarmenu]');">Quick Start</div>
 			</div>
 			<div id="sidebarmenu-engine" class="box-content">
 				<div id="engine">
@@ -130,22 +130,22 @@
 						<input id="engine-js" name="engine" value="js" type="radio" checked>
 						<label for="engine-js" class="radio-label">JavaScript</label>
 					</div>
-					<!--div class="radio">
-						<input id="engine-python" name="engine" value="python" type="radio" >
+					<div class="radio">
+						<input id="engine-python" name="engine" value="python" type="radio" disabled>
 						<label for="engine-python" class="radio-label">Python (3.4)</label>
 					</div>
 					<div class="radio">
-						<input id="engine-ruby" name="engine" value="ruby" type="radio" >
+						<input id="engine-ruby" name="engine" value="ruby" type="radio" disabled>
 						<label for="engine-ruby" class="radio-label">Ruby (2.1)</label>
 					</div>
 					<div class="radio">
-						<input id="engine-java" name="engine" value="java" type="radio" >
+						<input id="engine-java" name="engine" value="java" type="radio" disabled>
 						<label for="engine-java" class="radio-label">Java (JDK 14)</label>
 					</div>
 					<div class="radio">
-						<input id="engine-pcre" name="engine" value="pcre" type="radio" >
+						<input id="engine-pcre" name="engine" value="pcre" type="radio" disabled>
 						<label for="engine-pcre" class="radio-label">PHP (7)</label>
-					</div-->
+					</div>
 				</div>
 			</div>
 			<div id="sidebarmenu-share" class="box-content" style="display:none;">
@@ -466,10 +466,9 @@
 		</div>
 	</div>
 	<script>
-		cyrilex = null;
 		window.addEventListener('load', function () {
-			cyrilex = new Cyrilex();
-			cyrilex.init();
+			Cyrilex.construct();
+			Cyrilex.init();
 		});
 	</script>
 </body>
